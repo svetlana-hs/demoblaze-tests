@@ -1,0 +1,15 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "description": "End-to-end tests for demoblaze platform",
+  "main": "index.js",
+  "scripts": {
+    "prettier-format": "prettier --config .prettierrc '**/*.js' --write"
+  },
+  "author": "Svetlana",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^14.2.0",
+    "prettier": "^3.5.3"
+  }
+}
