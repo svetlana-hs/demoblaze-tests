@@ -12,6 +12,12 @@ const fillPurchaseForm = (data) => {
   })
 }
 
+// wait for cart loading
+const waitForCart = () => {
+  cy.intercept('POST', Cypress.env('apiBaseUrl') + '/view').as('viewCart')
+  cy.wait('@viewCart').its('response.statusCode').should('eq', 200)
+}
+
 // load fixtures and clear the cart
 beforeEach(() => {
   cy.fixture('user').as('user')
@@ -44,6 +50,9 @@ it('buys a laptop as a logged user and check purchase details', function () {
 
   cy.log('check the cart and click Place Order')
   cy.get('#cartur').click()
+
+  cy.log('wait for cart loading')
+  waitForCart()
   cy.contains('div.table-responsive', `${laptop.model}`)
   cy.contains('#totalp', `${laptop.price}`)
   cy.contains('button', 'Place Order').click()
@@ -81,6 +90,9 @@ it('buys a laptop after change the model', function () {
 
   cy.log('go to the cart and check the laptop')
   cy.get('#cartur').click()
+
+  cy.log('wait for cart loading')
+  waitForCart()
   cy.contains('div.table-responsive', `${laptops[1].model}`)
 
   cy.log('click Place Order')
@@ -111,6 +123,11 @@ it('shows an error message when credit card is empty', function () {
 
   cy.log('go to the cart')
   cy.get('#cartur').click()
+
+  cy.log('wait for cart loading')
+  waitForCart()
+
+  cy.log('click Place Order')
   cy.contains('button', 'Place Order').click()
 
   cy.log('fill the form and click Purchase')
